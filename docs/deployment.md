@@ -95,3 +95,30 @@ Google Client ID·Secret은 Supabase Dashboard의 Google provider에 저장합�
 - 장소 출처·확인일·사진 사용권 미확인
 - 비밀키가 Git, 브라우저 번들 또는 로그에 노출됨
 - TMAP 교차 표시 서면 승인 없음에도 앱 내부에 TMAP 경로를 표시함
+
+## 7. Supabase Free 백업 절차
+
+Free 플랜에는 자동 백업이 없으므로 `public` schema와 사용자 데이터를 별도 보안 저장소에 정기 보관합니다. dump에는 사용자 ID와 일정정보가 포함될 수 있으므로 Git·공유 폴더·일반 로그에 넣지 않습니다.
+
+```bash
+backup_dir=/secure/off-repo-backups/ic-project
+backup_stamp=$(date +%Y%m%d-%H%M%S)
+
+supabase db dump --linked --schema public \
+  --file "$backup_dir/schema-$backup_stamp.sql"
+
+supabase db dump --linked --schema public --data-only --use-copy \
+  --file "$backup_dir/data-$backup_stamp.sql"
+
+shasum -a 256 \
+  "$backup_dir/schema-$backup_stamp.sql" \
+  "$backup_dir/data-$backup_stamp.sql"
+```
+
+운영 규칙:
+
+- 백업 위치는 저장소 밖의 암호화된 저장소를 사용합니다.
+- 생성 직후 두 파일의 크기·SHA-256과 data dump의 `COPY public.` 구문을 확인합니다.
+- 최소 월 1회와 출시·migration 직전에 생성합니다.
+- 복원 연습은 별도 Supabase 테스트 프로젝트 또는 격리된 로컬 Postgres에서 수행합니다.
+- 2026-09-20 검증에서 schema·data dump 생성과 8개 public 테이블의 `COPY` 구문을 확인했습니다. 검증용 원본 파일은 점검 뒤 삭제합니다.

@@ -259,5 +259,6 @@
 
 - [x] STORY 13.1: Git 저장소와 Vercel 프로젝트를 연결한다 (완료 확인: 배포 기록에서 최신 코드가 성공 상태로 표시됩니다.)
   - 기록: GitHub `aiwhyclub/ic-project`의 `main`과 Vercel `creator-47ed9835/ic-project`를 연결하고 커밋 `69aef15`의 production 배포 `READY` 및 실제 첫 화면을 확인함 / 변경 파일: .gitignore, .env.example, README.md, docs/deployment.md / 실행 주소: https://ic-project-xi.vercel.app
-- [ ] STORY 13.2: Supabase Cloud와 배포 환경변수·OAuth 콜백·Kakao 허용 도메인을 연결한다 (완료 확인: 공개 주소에서 두 로그인과 본인 일정 저장이 동작합니다.)
+- [x] STORY 13.2: Supabase Cloud와 배포 환경변수·OAuth 콜백·Kakao 허용 도메인을 연결한다 (완료 확인: 공개 주소에서 두 로그인과 본인 일정 저장이 동작합니다.)
+  - 기록: Vercel Production 변수 8개, Supabase Cloud migration·seed·Site URL·Google/Kakao provider, Kakao production 도메인·redirect를 연결하고 Google·Kakao 사용자별 일정 1개씩의 저장·격리를 확인함 / 변경 파일: .env.example, docs/deployment.md, supabase/migrations/, supabase/seed.sql / 실행 주소: https://ic-project-xi.vercel.app
 - [ ] STORY 13.3: 공개 전 RLS·장소 정보·사진 사용권·Kakao/TMAP 약관·비용 상한을 다시 점검한다 (완료 확인: 출시 체크리스트의 근거 링크와 확인일이 모두 채워지고 막는 항목이 없습니다.)
