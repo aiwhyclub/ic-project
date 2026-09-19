@@ -54,10 +54,8 @@ export type CuratedRoute = {
   readonly interestTags: readonly string[];
   readonly recommendationReason: string;
   readonly stops: readonly CuratedRouteStop[];
-  readonly photo: PlacePhoto;
   readonly source: SourceReference;
   readonly license: LicenseInfo;
   readonly checkedAt: IsoDate;
   readonly isFallback: boolean;
 };
-

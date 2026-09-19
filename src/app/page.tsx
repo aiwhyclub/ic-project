@@ -181,7 +181,7 @@ export default function Home() {
                     <option value="">출발점을 선택하세요</option>
                     <option value="icheon-station">이천역</option>
                     <option value="seolbong">설봉공원 주변</option>
-                    <option value="yes-park">예스파크 주변</option>
+                    <option value="gyeonggi-ceramic-museum-icheon">경기도자미술관 주변</option>
                   </select>
                   {errors.startLocation ? <p className="field-error" role="alert">{errors.startLocation}</p> : null}
                 </div>

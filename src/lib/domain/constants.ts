@@ -1,10 +1,8 @@
 import type {
   AudienceType,
   DayOfWeek,
-  LicenseInfo,
   PlanBReason,
   PlaceCategory,
-  SourceReference,
   TransportMode,
 } from "./types";
 
@@ -52,23 +50,3 @@ export const PLAN_B_REASON_LABELS: Readonly<Record<PlanBReason, string>> = {
 
 export const DEMO_CHECKED_AT = "2026-09-19";
 export const DEMO_CALCULATED_AT = "2026-09-19T09:00:00+09:00";
-
-export const DEMO_SOURCE: SourceReference = {
-  publisher: "이천 세이브포인트",
-  title: "로컬 데모 검증 데이터",
-  url: "https://example.com/icheon-savepoint/demo-source",
-  checkedAt: DEMO_CHECKED_AT,
-};
-
-export const DEMO_LICENSE: LicenseInfo = {
-  name: "local-demo-fixture",
-  attribution: "이천 세이브포인트 로컬 데모 데이터",
-  usage: "학습·로컬 데모 전용. 공개 전 원출처와 사진 사용권을 재확인해야 합니다.",
-};
-
-export const PLACEHOLDER_LICENSE: LicenseInfo = {
-  name: "generated-placeholder",
-  attribution: "이천 세이브포인트 생성형 플레이스홀더",
-  usage: "로컬 데모 UI 확인용. 실제 서비스 출시 전 검증된 사진으로 교체해야 합니다.",
-};
-

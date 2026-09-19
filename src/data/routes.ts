@@ -1,9 +1,5 @@
 import {
   AUDIENCE_LABELS,
-  DEMO_CHECKED_AT,
-  DEMO_LICENSE,
-  DEMO_SOURCE,
-  PLACEHOLDER_LICENSE,
 } from "@/lib/domain/constants";
 import {
   deriveRouteSegmentsForPlaces,
@@ -24,7 +20,6 @@ import type {
   CuratedRouteStop,
   ItineraryDraft,
   ItineraryStop,
-  PlacePhoto,
   RouteCalculation,
   RouteSegment,
   TransportMode,
@@ -32,13 +27,18 @@ import type {
 } from "@/lib/domain/types";
 import { VERIFIED_PLACES, findPlace } from "./places";
 
-const routePhotoFor = (routeId: string, title: string): PlacePhoto => ({
-  id: `${routeId}-cover`,
-  src: `/placeholders/${routeId}.webp`,
-  alt: `${title} 대표 이미지 플레이스홀더`,
-  source: DEMO_SOURCE,
-  license: PLACEHOLDER_LICENSE,
-});
+const ROUTE_CHECKED_AT = "2026-09-20";
+const ROUTE_SOURCE = {
+  publisher: "이천 세이브포인트",
+  title: "공식 출처 기반 기본 동선 편집안",
+  url: "https://github.com/aiwhyclub/ic-project/blob/main/docs/research/verified-place-catalog.md",
+  checkedAt: ROUTE_CHECKED_AT,
+} satisfies CuratedRoute["source"];
+const ROUTE_LICENSE = {
+  name: "자체 작성 큐레이션",
+  attribution: "이천 세이브포인트 · 장소별 공식 출처 표시",
+  usage: "사실 메타데이터를 바탕으로 직접 작성했으며 외부 사진과 설명문을 복제하지 않습니다.",
+} satisfies CuratedRoute["license"];
 
 type RouteSeedStop = {
   readonly placeId: string;
@@ -75,10 +75,9 @@ const makeRoute = (
       stopReason: stop.stopReason ?? "검증 장소를 순서대로 연결한 데모 코스입니다.",
     }),
   ),
-  photo: routePhotoFor(id, title),
-  source: DEMO_SOURCE,
-  license: DEMO_LICENSE,
-  checkedAt: DEMO_CHECKED_AT,
+  source: ROUTE_SOURCE,
+  license: ROUTE_LICENSE,
+  checkedAt: ROUTE_CHECKED_AT,
   isFallback: true,
 });
 
@@ -86,49 +85,49 @@ export const CURATED_ROUTES: readonly CuratedRoute[] = [
   makeRoute(
     "route-ceramics-and-lake",
     "도자기와 설봉호수 산책",
-    "이천의 도자 문화와 호수 산책을 천천히 이어 보는 반나절 코스",
+    "도자·지역사 전시와 설봉호 산책을 함께 이어 보는 반나절 코스",
     "friends",
     "transit",
     330,
-    ["도자", "산책", "카페", "친구·연인"],
-    "대중교통으로 접근한 뒤 전시와 호수 산책 사이에 차 한 잔의 여유를 넣을 수 있습니다.",
+    ["도자", "산책", "미술", "친구·연인"],
+    "공식 운영정보가 있는 전시 공간과 설봉호 산책을 한 권역에서 비교할 수 있습니다.",
     [
-      { placeId: "icheon-ceramics-museum", position: 1, dwellMinutes: 75 },
-      { placeId: "ceramic-tea-house", position: 2, dwellMinutes: 55 },
-      { placeId: "seolbong-park", position: 3, dwellMinutes: 60 },
-      { placeId: "seolbong-lake-cafe", position: 4, dwellMinutes: 50 },
+      { placeId: "gyeonggi-ceramic-museum-icheon", position: 1, dwellMinutes: 90 },
+      { placeId: "icheon-city-museum", position: 2, dwellMinutes: 75 },
+      { placeId: "seolbong-lake", position: 3, dwellMinutes: 60 },
+      { placeId: "icheon-woljeon-museum", position: 4, dwellMinutes: 75 },
     ],
   ),
   makeRoute(
     "route-family-rice-and-craft",
     "아이와 함께 만나는 이천",
-    "도자 체험과 쌀 문화를 함께 담은 자차 중심 가족 하루 코스",
+    "농업·농촌 체험과 역사 전시를 함께 담은 자차 중심 가족 하루 코스",
     "family",
     "car",
     420,
-    ["가족", "체험", "쌀", "도자"],
-    "주차가 가능한 실내·체험 장소를 섞어 날씨가 바뀌어도 하루 흐름을 이어가기 쉽습니다.",
+    ["가족", "체험", "농촌", "역사"],
+    "계절 체험과 실내 전시를 섞어 가족이 이천의 농업과 역사를 함께 만날 수 있습니다.",
     [
-      { placeId: "yes-park", position: 1, dwellMinutes: 100 },
-      { placeId: "rice-cultural-center", position: 2, dwellMinutes: 80 },
-      { placeId: "sulsul-rice-kitchen", position: 3, dwellMinutes: 80 },
-      { placeId: "icheon-ceramics-museum", position: 4, dwellMinutes: 75 },
+      { placeId: "icheon-agricultural-theme-park", position: 1, dwellMinutes: 100 },
+      { placeId: "icheon-sansuyu-village", position: 2, dwellMinutes: 90 },
+      { placeId: "seohui-history-hall", position: 3, dwellMinutes: 70 },
+      { placeId: "gyeonggi-ceramic-museum-icheon", position: 4, dwellMinutes: 90 },
     ],
   ),
   makeRoute(
     "route-market-and-local-life",
-    "시장부터 옛 이천역까지",
-    "관고전통시장과 로컬 공간을 짧은 이동으로 엮은 도보 생활문화 코스",
+    "시장과 설봉 문화 산책",
+    "관고전통시장과 설봉권 문화 공간을 연결한 도보 생활문화 코스",
     "couple",
     "walk",
     300,
-    ["시장", "로컬", "식사", "산책"],
-    "시장 먹거리와 지역 이야기를 가까운 거리에서 비교하며 이천의 일상을 만날 수 있습니다.",
+    ["시장", "로컬", "역사", "산책"],
+    "시장과 서원·미술관·호수를 연결해 이천의 생활과 향토 문화를 함께 볼 수 있습니다.",
     [
-      { placeId: "icheon-traditional-market", position: 1, dwellMinutes: 70 },
-      { placeId: "sulsul-rice-kitchen", position: 2, dwellMinutes: 80 },
-      { placeId: "old-icheon-station", position: 3, dwellMinutes: 35 },
-      { placeId: "seolbong-lake-cafe", position: 4, dwellMinutes: 50 },
+      { placeId: "gwango-traditional-market", position: 1, dwellMinutes: 70 },
+      { placeId: "seolbong-seowon", position: 2, dwellMinutes: 45 },
+      { placeId: "icheon-woljeon-museum", position: 3, dwellMinutes: 75 },
+      { placeId: "seolbong-lake", position: 4, dwellMinutes: 60 },
     ],
   ),
 ];

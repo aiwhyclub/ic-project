@@ -1,72 +1,62 @@
 import {
   CATEGORY_LABELS,
-  DEMO_CHECKED_AT,
-  DEMO_LICENSE,
-  DEMO_SOURCE,
-  PLACEHOLDER_LICENSE,
 } from "@/lib/domain/constants";
 import type {
   DayOfWeek,
+  LicenseInfo,
   OpeningHours,
   PlaceCategory,
-  PlacePhoto,
+  SourceReference,
   VerifiedPlace,
 } from "@/lib/domain/types";
 
-export const STANDARD_OPENING_HOURS: readonly OpeningHours[] = [
-  { day: "monday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
-  { day: "tuesday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
-  { day: "wednesday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
-  { day: "thursday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
-  { day: "friday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
-  { day: "saturday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
-  { day: "sunday", opensAt: "09:00", closesAt: "18:00", note: "마지막 입장 17:30" },
+const DAYS: readonly DayOfWeek[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
 ];
 
-export const EXTENDED_OPENING_HOURS: readonly OpeningHours[] = [
-  { day: "monday", opensAt: "10:00", closesAt: "20:00", note: "브레이크타임 없음" },
-  { day: "tuesday", opensAt: "10:00", closesAt: "20:00", note: "브레이크타임 없음" },
-  { day: "wednesday", opensAt: "10:00", closesAt: "20:00", note: "브레이크타임 없음" },
-  { day: "thursday", opensAt: "10:00", closesAt: "20:00", note: "브레이크타임 없음" },
-  { day: "friday", opensAt: "10:00", closesAt: "21:00", note: "저녁 운영" },
-  { day: "saturday", opensAt: "10:00", closesAt: "21:00", note: "저녁 운영" },
-  { day: "sunday", opensAt: "10:00", closesAt: "20:00", note: "브레이크타임 없음" },
-];
+export const VERIFIED_CHECKED_AT = "2026-09-20";
 
-export const MARKET_OPENING_HOURS: readonly OpeningHours[] = [
-  { day: "monday", opensAt: "09:00", closesAt: "19:00", note: "점포별 운영시간 상이" },
-  { day: "tuesday", opensAt: "09:00", closesAt: "19:00", note: "점포별 운영시간 상이" },
-  { day: "wednesday", opensAt: "09:00", closesAt: "19:00", note: "점포별 운영시간 상이" },
-  { day: "thursday", opensAt: "09:00", closesAt: "19:00", note: "점포별 운영시간 상이" },
-  { day: "friday", opensAt: "09:00", closesAt: "20:00", note: "점포별 운영시간 상이" },
-  { day: "saturday", opensAt: "09:00", closesAt: "20:00", note: "점포별 운영시간 상이" },
-  { day: "sunday", opensAt: "09:00", closesAt: "18:00", note: "점포별 운영시간 상이" },
-];
+export const OFFICIAL_FACTS_LICENSE: LicenseInfo = {
+  name: "공식 출처 사실 메타데이터",
+  attribution: "장소별 공식 출처 표시 · 외부 사진 미사용",
+  usage: "명칭·주소·대표 연락처·운영정보만 요약하며 공식 설명문과 이미지는 복제하지 않습니다.",
+};
 
-export const photoFor = (placeId: string, placeName: string): PlacePhoto => ({
-  id: `${placeId}-primary`,
-  src: `/placeholders/${placeId}.webp`,
-  alt: `${placeName} 대표 이미지 플레이스홀더`,
-  source: DEMO_SOURCE,
-  license: PLACEHOLDER_LICENSE,
-});
+export function officialSource(
+  publisher: string,
+  title: string,
+  url: string,
+): SourceReference {
+  return { publisher, title, url, checkedAt: VERIFIED_CHECKED_AT };
+}
+
+export function dailyOpeningHours(
+  opensAt: string | null,
+  closesAt: string | null,
+  note: string,
+): readonly OpeningHours[] {
+  return DAYS.map((day) => ({ day, opensAt, closesAt, note }));
+}
 
 export type PlaceSeed = Omit<
   VerifiedPlace,
-  "photos" | "source" | "license" | "checkedAt" | "verification"
+  "photos" | "verification"
 >;
 
 export const makeVerifiedPlace = (seed: PlaceSeed): VerifiedPlace => ({
   ...seed,
-  photos: [photoFor(seed.id, seed.name)],
-  source: DEMO_SOURCE,
-  license: DEMO_LICENSE,
-  checkedAt: DEMO_CHECKED_AT,
+  photos: [],
   verification: {
     status: "verified-fixture",
-    source: DEMO_SOURCE,
-    license: DEMO_LICENSE,
-    checkedAt: DEMO_CHECKED_AT,
+    source: seed.source,
+    license: seed.license,
+    checkedAt: seed.checkedAt,
   },
 });
 
@@ -84,4 +74,3 @@ export const getDayLabel = (day: DayOfWeek): string => {
   };
   return labels[day];
 };
-

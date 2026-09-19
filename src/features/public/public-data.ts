@@ -19,6 +19,7 @@ export type PublicPlace = Readonly<{
   closedDays: string;
   marketDays: string;
   reservationRequired: boolean;
+  reservationNote: string;
   parkingInfo: string;
   defaultDwellMinutes: number;
   sourceName: string;
@@ -68,6 +69,7 @@ function toPublicPlace(place: VerifiedPlace): PublicPlace {
     closedDays: place.closedDays.length > 0 ? place.closedDays.join(" · ") : "없음",
     marketDays: place.marketDays.length > 0 ? place.marketDays.join(" · ") : "해당 없음",
     reservationRequired: place.reservation.required,
+    reservationNote: place.reservation.note,
     parkingInfo: place.parkingInfo,
     defaultDwellMinutes: place.defaultDwellMinutes,
     sourceName: place.source.publisher,

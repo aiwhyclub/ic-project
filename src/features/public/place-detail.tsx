@@ -50,11 +50,11 @@ export function PlaceDetail({ place, returnTo }: PlaceDetailProps) {
             </div>
             <dl className="place-facts-grid">
               <div><dt>주소</dt><dd>{place.address}</dd></div>
-              <div><dt>연락처</dt><dd><a href={`tel:${place.phone.replaceAll("-", "")}`}>{place.phone}</a></dd></div>
+              <div><dt>연락처</dt><dd>{place.phone ? <a href={`tel:${place.phone.replaceAll("-", "")}`}>{place.phone}</a> : "공식 연락처 미제공"}</dd></div>
               <div><dt>운영시간</dt><dd>{place.openingHours}</dd></div>
               <div><dt>휴무일</dt><dd>{place.closedDays}</dd></div>
               <div><dt>장날·행사</dt><dd>{place.marketDays}</dd></div>
-              <div><dt>예약</dt><dd>{place.reservationRequired ? "방문 전 예약 권장" : "예약 없이 방문 가능"}</dd></div>
+              <div><dt>예약</dt><dd>{place.reservationNote}</dd></div>
               <div><dt>주차</dt><dd>{place.parkingInfo}</dd></div>
               <div><dt>추천 체류</dt><dd>{place.defaultDwellMinutes}분</dd></div>
             </dl>
@@ -66,7 +66,7 @@ export function PlaceDetail({ place, returnTo }: PlaceDetailProps) {
             <dl className="source-facts">
               <div><dt>정보 출처</dt><dd><a href={place.sourceUrl} target="_blank" rel="noreferrer">{place.sourceName}</a></dd></div>
               <div><dt>마지막 확인</dt><dd>{place.verifiedAt}</dd></div>
-              <div><dt>사진 사용권</dt><dd>{place.licenseSource}</dd></div>
+              <div><dt>정보 이용 범위</dt><dd>{place.licenseSource}</dd></div>
             </dl>
             <p className="source-note">지도 타일과 경로 원문은 저장하지 않으며, 장소를 일정에 넣을 때는 장소 ID와 순서만 이어집니다.</p>
           </aside>

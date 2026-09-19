@@ -6,21 +6,21 @@ import { KakaoMapCanvas } from "@/features/maps/kakao-map-canvas";
 import { PUBLIC_PLACES, getPublicPlace } from "@/features/public/public-data";
 
 const MARKER_POSITIONS: Readonly<Record<string, Readonly<{ left: string; top: string }>>> = {
-  "seolbong-park": { left: "52%", top: "27%" },
-  "icheon-ceramics-museum": { left: "78%", top: "22%" },
-  "yes-park": { left: "72%", top: "36%" },
-  "icheon-traditional-market": { left: "47%", top: "65%" },
-  "rice-cultural-center": { left: "27%", top: "45%" },
-  "ceramic-tea-house": { left: "84%", top: "53%" },
-  "sulsul-rice-kitchen": { left: "56%", top: "72%" },
-  "old-icheon-station": { left: "32%", top: "72%" },
-  "seolbong-lake-cafe": { left: "39%", top: "34%" },
+  "gyeonggi-ceramic-museum-icheon": { left: "40%", top: "50%" },
+  "icheon-city-museum": { left: "46%", top: "53%" },
+  "seolbong-lake": { left: "47%", top: "45%" },
+  "gwango-traditional-market": { left: "57%", top: "49%" },
+  "icheon-woljeon-museum": { left: "41%", top: "43%" },
+  "seolbong-seowon": { left: "36%", top: "41%" },
+  "icheon-agricultural-theme-park": { left: "60%", top: "80%" },
+  "icheon-sansuyu-village": { left: "65%", top: "15%" },
+  "seohui-history-hall": { left: "75%", top: "50%" },
 };
 
 export function MapExplorer() {
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
-  const [selectedPlaceId, setSelectedPlaceId] = useState("seolbong-park");
+  const [selectedPlaceId, setSelectedPlaceId] = useState("gyeonggi-ceramic-museum-icheon");
   const [boundsVersion, setBoundsVersion] = useState(0);
   const [failed, setFailed] = useState(false);
   const [isSheetExpanded, setIsSheetExpanded] = useState(false);
