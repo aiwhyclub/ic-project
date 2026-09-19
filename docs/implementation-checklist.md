@@ -37,8 +37,10 @@
 
 ## 외부 자격증명·약관 공백
 
-- [ ] **Supabase Google·Kakao OAuth:** 실제 client ID, redirect URL, PKCE callback과 로그인·취소·세션 만료를 자격증명 환경에서 검증한다. (현재: 검증 전)
-- [ ] **Kakao Map·Mobility:** Web SDK·REST·Mobility key, 허용 도메인, 일일 쿼터·비용과 최신 약관을 확인한다. (현재: 검증 전)
-- [ ] **Gemini:** 모델 ID·API key·무료 한도, 추천 입력에서 이메일·사용자 ID·현재 위치를 제외하는 운영 정책을 확인한다. (현재: 검증 전)
+- [ ] **Vercel production 환경:** GitHub `main` 연결과 production 배포 `READY`는 확인했다. Supabase·Kakao production 환경변수 전송과 재배포는 보안 승인을 기다린다. (현재: 부분 완료, `docs/release-evidence.md`)
+- [ ] **Supabase Google·Kakao OAuth:** 두 provider와 production Site URL·callback allow list는 설정했다. 실제 Google·Kakao 로그인, 취소·세션 만료, 원래 일정 복귀는 production 환경변수 반영 뒤 검증한다. (현재: 부분 완료)
+- [ ] **Kakao Map·Mobility:** production JavaScript SDK 도메인과 Login Redirect URI, 무료 쿼터 배지, 현재 사용량, Biz Wallet 미연결을 확인했다. production 지도 렌더링은 Vercel 환경변수 반영 뒤 검증한다. (현재: 비용 상한 0원, 화면 검증 대기)
+- [x] **Gemini:** 현재 출시에서는 외부 Gemini API를 연결하지 않고 검수된 기본 큐레이션 3개 fallback만 사용한다. API key·사용료·개인정보 전송이 없다. (2026-09-20 범위 결정)
 - [x] **TMAP:** 현재 출시 범위에서 TMAP 연동과 앱 내부 교차 표시를 제외한다. 다시 도입한다면 외부 전환부터 별도 계획으로 검토하고, 내부 표시는 서면 승인 전 추가하지 않는다. (2026-09-20 범위 결정)
-- [ ] **Supabase Cloud:** `auth.uid()` RLS, 계정·일정 삭제, service role 서버 전용, 백업·보존 정책을 Cloud project에서 확인한다. (현재: 검증 전)
+- [x] **장소 정보·사진 사용권:** 공식·시설 원출처가 있는 실재 장소 9개로 교체하고 `example.com` 출처·가짜 전화번호·외부 사진을 제거했다. 각 상세에 출처·확인일·외부 사진 미사용 범위를 표시한다. (2026-09-20, `docs/research/verified-place-catalog.md`)
+- [ ] **Supabase Cloud:** migration·seed 적용, schema lint, 공개 데이터 익명 읽기, 익명 insert 401은 확인했다. 두 실제 계정의 상호 접근 차단, 계정 삭제 연쇄 동작과 Free 백업 대응은 추가 검증이 필요하다. (현재: 부분 완료)
