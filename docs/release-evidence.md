@@ -6,7 +6,7 @@
 - 범위: Vercel, Supabase, Kakao Maps, TMAP, 장소 정보, 사진 사용권
 - STORY 13.1 판정: **완료 — Git 연결과 Production READY 확인**
 - STORY 13.2 판정: **완료 — Production 환경변수·지도·두 OAuth·사용자별 저장 확인**
-- STORY 13.3 판정: **미완료 — 계정삭제 연쇄의 최종 승인·실행만 남음**
+- STORY 13.3 판정: **완료 — 계정삭제 연쇄와 운영 도메인 전환까지 검증**
 - 정정 항목 1건 · 신뢰도 0.99: Supabase Dashboard Users 표의 빈 결과를 사용자 0명으로 잘못 해석했으나, Auth Admin 200 응답에서 Google·Kakao 사용자 각 1명을 확인해 정정했다.
 - 원칙: 공식 1차 문서만 외부 사실 근거로 사용하고, 외부 사실과 프로젝트 결정을 분리한다.
 - 보안: API 키, Client Secret, 액세스 토큰, 앱 ID, 개인 이메일, Google project ID와 Supabase project ref는 기록하지 않는다.
@@ -18,11 +18,11 @@
 
 | 영역 | 확인된 사실 | 프로젝트 판단 | 출시 전 상태 |
 | --- | --- | --- | --- |
-| Vercel | Team `Drone`의 Hobby 프로젝트 `ic-project`가 GitHub `aiwhyclub/ic-project`의 `main`과 연결됐다. commit `686dabbd6411f231eb075760ac9e3884d329a7d8` 기반 Production 환경변수 반영 재배포가 `READY`이며 안정 URL은 `https://ic-project-xi.vercel.app`이다. | STORY 13.1 완료. 단, Hobby는 개인·비상업 범위이므로 상업 운영이면 Pro 전환이 필요하다. | **완료** |
-| Supabase | `Vibe Coding Project`는 `FREE`·`Healthy`다. migration 5개가 적용됐고 Cloud DB lint는 clean이다. Site URL·redirect allow list·Google/Kakao provider를 설정했다. Auth Admin에서 provider별 사용자 1명과 provider별 일정 1개를 확인했다. | 두 OAuth 로그인·callback·사용자별 저장과 격리를 확인했다. Free 자동 backup은 없지만 schema·data dump 실행 절차와 결과를 검증했다. | **계정삭제 검증 대기** |
+| Vercel | Team `Drone`의 Hobby 프로젝트 `ic-project`가 GitHub `aiwhyclub/ic-project`의 `main`과 연결됐다. Production 환경변수 반영 배포가 `READY`이며 안정 URL은 `https://ictour.vercel.app`이다. | STORY 13.1 완료. 단, Hobby는 개인·비상업 범위이므로 상업 운영이면 Pro 전환이 필요하다. | **완료** |
+| Supabase | `Vibe Coding Project`는 `FREE`·`Healthy`다. migration 5개가 적용됐고 Cloud DB lint는 clean이다. Site URL·redirect allow list·Google/Kakao provider를 설정했다. 삭제 전 provider별 사용자·일정 1개씩을 확인한 뒤 Google 사용자를 삭제했고, Google 소유 가족 일정도 함께 삭제됐다. | 두 OAuth 로그인·callback·사용자별 저장·격리와 계정삭제 연쇄를 확인했다. Free 자동 backup은 없지만 schema·data dump 실행 절차와 결과를 검증했다. | **완료** |
 | Kakao Maps | 계정의 유일한 Drone 앱에 Kakao Map 무료 쿼터 배지가 있다. Production JavaScript SDK domain·Login Redirect URI와 실제 지도 타일·축척·저작권 링크를 확인했다. | Production domain·redirect·지도 렌더링·현재 유료비용 상한 blocker는 해제됐다. | **완료** |
 | TMAP | 공개 문서에는 경로·외부 앱 연동 기능과 데이터 보관·유료 전환 경계가 있다. 세부 링크는 부록 A9~A11에 보존했다. | TMAP API 연동과 Kakao Map 내부 교차 표시는 1차 출시에서 제외한다. 재도입은 외부 앱·웹 전환부터 별도 검토하며, 내부 표시는 서면 허용 근거를 확보한 뒤에만 검토한다. | **현재 출시 범위 제외** |
-| Cloud REST·RLS | 익명 조회 `places=9`, `curations=3`, `curation_stops=12`, `place_media=0`, `example.com source=0`, 익명 insert 401을 확인했다. Google·Kakao 사용자는 각 1명이고 일정도 provider별 1개이며 상대 일정을 볼 수 없었다. | 공개 읽기·익명 쓰기 차단·`auth.uid()` 소유 데이터 격리를 확인했다. 계정삭제 연쇄만 최종 승인 대기다. | **계정삭제 검증 대기** |
+| Cloud REST·RLS | 익명 조회 `places=9`, `curations=3`, `curation_stops=12`, `place_media=0`, `example.com source=0`, 익명 insert 401을 확인했다. 삭제 전 Google·Kakao 사용자는 각 1명이고 일정도 provider별 1개였으며 상대 일정을 볼 수 없었다. Google 계정삭제 뒤에는 Kakao 사용자 1명·일정 1개·stop 4개만 남고 draft는 0개였다. | 공개 읽기·익명 쓰기 차단·`auth.uid()` 소유 데이터 격리와 Google auth user·소유 일정·stop 연쇄 삭제를 확인했다. | **완료** |
 | 장소 정보·사진 | `src/data/place-fixtures-*.ts`와 `supabase/seed.sql`이 실재 장소 9개·외부 사진 0개로 교체됐다. 근거는 `docs/research/verified-place-catalog.md`에 있다. | fake fixture·`example.com`·외부 사진 blocker는 해제됐다. 장소·사진 범위는 현재 photo-free 정책으로 완료다. | **완료** |
 | Vercel 환경변수 | 사용자의 명시적 승인 뒤 Production 변수 8개를 Config/Secret으로 분리 등록하고 최신 production을 재배포해 `READY`를 확인했다. | 공개 앱의 Cloud DB·Kakao 지도·두 OAuth 연결에 필요한 runtime 설정을 완료했다. | **완료** |
 
@@ -36,7 +36,7 @@
 - `captured_at`: 2026-09-20
 - `provenance_note`: Vercel 공식 Git 배포 문서의 자동 배포, 저장소 import, production branch 설명을 확인했다.
 
-**프로젝트 사실.** Vercel Dashboard에서 Team `Drone`, Hobby, project `ic-project`, 연결 저장소 `aiwhyclub/ic-project`, production branch `main`을 확인했다. commit `686dabbd6411f231eb075760ac9e3884d329a7d8` 기반 환경변수 반영 재배포는 `READY`이고 안정 URL은 `https://ic-project-xi.vercel.app`이다. 브라우저에서 실제 Kakao 지도, 장소 9개, 큐레이션 3개도 확인했다.
+**프로젝트 사실.** Vercel Dashboard에서 Team `Drone`, Hobby, project `ic-project`, 연결 저장소 `aiwhyclub/ic-project`, production branch `main`을 확인했다. 환경변수 반영 재배포는 `READY`이고 안정 URL은 `https://ictour.vercel.app`이다. 브라우저에서 실제 Kakao 지도, 장소 9개, 큐레이션 3개도 확인했다.
 
 **프로젝트 판단.** STORY 13.1은 완료다. 이후 Production 변수 8개를 반영한 재배포도 `READY`로 확인했다.
 
@@ -72,7 +72,7 @@
 - `captured_at`: 2026-09-20
 - `provenance_note`: Supabase 공식 redirect 문서의 Site URL, allow list, Vercel Preview 패턴과 Production 정확 URL 권고를 확인했다.
 
-**프로젝트 사실.** Supabase Cloud `Site URL`은 `https://ic-project-xi.vercel.app`이며 redirect allow list에는 Production `/auth/callback`이 추가돼 총 3개다. Google·Kakao provider 모두 Enabled다. Google OAuth credential은 사용자가 비밀값을 노출하지 않고 직접 입력했다.
+**프로젝트 사실.** Supabase Cloud `Site URL`은 `https://ictour.vercel.app`이며 redirect allow list에는 새 Production `/auth/callback`이 추가되고 기존 Production callback은 제거돼 총 3개다. Google·Kakao provider 모두 Enabled다. Google OAuth credential은 사용자가 비밀값을 노출하지 않고 직접 입력했다.
 
 **프로젝트 판단.** 두 provider 설정과 Production 로그인·callback·일정 저장을 확인했다. Google·Kakao 사용자는 각각 별도 소유 일정 1개만 조회했으므로 STORY 13.2는 완료다.
 
@@ -86,7 +86,7 @@
 
 **프로젝트 사실.** Cloud에 기존 3개와 array type fix·publish time fix를 포함한 migration 5개가 적용됐고 DB lint는 clean이다. 익명 REST로 공개 카탈로그 수량을 확인했으며 익명 `places` insert는 HTTP 401이었다.
 
-**프로젝트 판단.** 익명 쓰기 차단과 두 OAuth 사용자의 `auth.uid()` 소유권 격리를 증명했다. 계정삭제 RPC의 auth user·소유 일정·stop·draft 연쇄 삭제는 최종 삭제 승인 뒤 검증한다.
+**프로젝트 판단.** 익명 쓰기 차단과 두 OAuth 사용자의 `auth.uid()` 소유권 격리를 증명했다. 승인된 Google 계정삭제 뒤 Auth 사용자는 Kakao 1명만 남았고, Google 소유 가족 일정은 사라졌으며 Kakao 일정 1개·stop 4개는 유지되고 draft는 0개였다. 따라서 auth user·소유 일정·stop 연쇄 삭제와 타 사용자 데이터 보존을 확인했다.
 
 ## 3. 2026-09-20 live evidence
 
@@ -96,13 +96,13 @@
 
 - `evidence_source`: Vercel Dashboard, Git 연결 상태, Production deployment, 공개 브라우저
 - `captured_at`: 2026-09-20
-- `provenance_note`: Team·plan·project·연결 저장소·branch·commit·READY 상태를 Dashboard에서 확인하고, 안정 URL에서 페이지 제목과 큐레이션 3개를 확인했다.
+- `provenance_note`: Team·plan·project·연결 저장소·branch·READY 상태를 Dashboard에서 확인하고, 안정 URL `https://ictour.vercel.app`에서 페이지 제목과 큐레이션 3개를 확인했다.
 
 ### L2. Supabase Cloud 구성
 
 - `evidence_source`: Supabase Dashboard와 Cloud migration/lint 결과
 - `captured_at`: 2026-09-20
-- `provenance_note`: project display name, FREE·Healthy, migration 5개, DB lint clean, Site URL, redirect allow list 총 3개, Google·Kakao Enabled와 backup 없음 상태를 확인했다.
+- `provenance_note`: project display name, FREE·Healthy, migration 5개, DB lint clean, 새 Site URL, 새 Production callback을 포함한 redirect allow list 총 3개, Google·Kakao Enabled와 backup 없음 상태를 확인했다.
 
 ### L3. Cloud REST·RLS 최소 검증
 
@@ -134,17 +134,23 @@
 - `captured_at`: 2026-09-20
 - `provenance_note`: 별도 Google Cloud project `ic-project`를 조직 없음·결제 연결 없음으로 생성하고, Google Auth Platform 앱 `이천 세이브포인트`를 External testing audience로 설정했다. 사용자가 Google API 사용자 데이터 정책을 직접 검토·동의했고, Web OAuth client `Icheon Savepoint Web`에 Production JavaScript origin과 Supabase Cloud auth callback을 등록했다. 사용자가 credential 값을 직접 Supabase에 입력한 뒤 Google·Kakao provider 모두 Enabled임을 확인했다. 개인 이메일, Google project ID, Client ID/Secret과 Supabase project ref는 기록하지 않았다.
 
-### L8. Production OAuth·소유권 격리
+### L8. Production OAuth·소유권 격리·계정삭제 연쇄
 
 - `evidence_source`: 공개 브라우저, Supabase Auth Admin 200 응답, service-role REST의 비식별 집계
 - `captured_at`: 2026-09-20
-- `provenance_note`: Auth 사용자는 Google 1명·Kakao 1명이고, 일정은 Google 소유 1개·Kakao 소유 1개였다. 각 마이페이지는 자기 일정 1개만 표시했다. Dashboard Users 표는 비어 있었지만 Auth Admin 200 응답과 실제 RLS 조회를 우선 근거로 사용했다. 사용자 ID·이메일·token은 기록하지 않았다.
+- `provenance_note`: 삭제 전 Auth 사용자는 Google 1명·Kakao 1명이고, 일정은 Google 소유 가족 일정 1개·Kakao 소유 일정 1개였다. 각 마이페이지는 자기 일정 1개만 표시했다. Google 계정을 삭제한 뒤 비식별 집계는 Auth 사용자 1명(Kakao), 일정 1개, stop 4개, draft 0개였고 Google 소유 가족 일정은 사라졌다. Dashboard Users 표는 비어 있었지만 Auth Admin 200 응답과 실제 RLS 조회를 우선 근거로 사용했다. 사용자 ID·이메일·token은 기록하지 않았다.
 
 ### L9. Supabase Free 수동 백업 검증
 
 - `evidence_source`: `supabase db dump --linked --schema public`, `--data-only --use-copy`, `wc -c`, `shasum -a 256`, `rg '^(COPY public\\.)'`
 - `captured_at`: 2026-09-20
 - `provenance_note`: schema dump 23,427바이트와 data dump 13,127바이트를 생성하고 SHA-256을 계산했다. data dump에 8개 public 테이블의 COPY 구문이 있음을 확인했다. 민감 dump 원본은 검증 후 삭제하고 저장소 밖 암호화 보관 절차만 `docs/deployment.md`에 남긴다.
+
+### L10. 운영 도메인 전환
+
+- `evidence_source`: Vercel CLI·Dashboard, Supabase Auth URL Configuration, Google Cloud OAuth client, Kakao Developers 플랫폼 키, 공개 브라우저
+- `captured_at`: 2026-09-20
+- `provenance_note`: 안정 URL을 `https://ictour.vercel.app`로 연결하고 Supabase Site URL·Production callback, Google 승인 JavaScript origin, Kakao JavaScript SDK domain·Login Redirect URI를 같은 도메인으로 교체했다. 기존 Production callback과 허용 origin은 제거했으며 비밀값은 기록하지 않았다.
 
 ## 4. Google·Kakao·TMAP 출시 범위 판단
 
@@ -155,7 +161,7 @@ Kakao Maps의 도메인, 쿼터·비용과 약관 사실은 부록 A5~A8에, TMA
 - 별도 Google Cloud project `ic-project`는 조직 없음·결제 연결 없음 상태다.
 - Google Auth Platform 앱 이름은 `이천 세이브포인트`, audience는 External testing이다.
 - 사용자가 Google API 사용자 데이터 정책을 직접 검토·동의했다.
-- Web OAuth client `Icheon Savepoint Web`에 `https://ic-project-xi.vercel.app` origin과 Supabase Cloud auth callback을 등록했다.
+- Web OAuth client `Icheon Savepoint Web`에 `https://ictour.vercel.app` origin과 Supabase Cloud auth callback을 등록했다.
 - Client ID/Secret은 사용자가 직접 Supabase에 입력했고 Google provider가 Enabled임을 확인했다. credential 값은 이 문서에 기록하지 않는다.
 - 결론: **Google provider 설정·Production 로그인·callback·일정 저장 완료**.
 
@@ -163,7 +169,7 @@ Kakao Maps의 도메인, 쿼터·비용과 약관 사실은 부록 A5~A8에, TMA
 
 - Supabase Kakao provider는 Enabled다.
 - Kakao 계정에는 Drone 앱 하나만 있고 해당 앱에 Kakao Map 무료 쿼터 배지가 있다.
-- JavaScript SDK production domain `https://ic-project-xi.vercel.app`과 Kakao Login Redirect URI `https://ic-project-xi.vercel.app/auth/callback` 등록·저장을 확인했다.
+- JavaScript SDK production domain `https://ictour.vercel.app`과 Kakao Login Redirect URI `https://ictour.vercel.app/auth/callback` 등록·저장을 확인했다.
 - Dashboard 표시는 이번 달 무료 API `2 / 3,000,000`이다. 오늘 상세에는 Map Web SDK `1 / 300,000`, 주소검색 `18 / 100,000`이 각각 표시됐다. 서로 다른 집계 화면의 수치를 임의로 합산하지 않는다.
 - 이용 중 Biz Wallet이 없다. 현재 계정 상태에서는 유료 API 결제가 자동 발생할 근거가 없으므로 프로젝트 비용 상한을 **0원**으로 운영한다. Biz Wallet을 연결하거나 유료 API를 활성화하면 즉시 재검토한다.
 - Production에서 실제 Kakao 지도 축척·저작권 링크와 Kakao OAuth 사용자·일정 저장을 확인했다.
@@ -224,7 +230,7 @@ Kakao Maps의 도메인, 쿼터·비용과 약관 사실은 부록 A5~A8에, TMA
 - [x] Vercel Project `ic-project`가 `aiwhyclub/ic-project`와 연결됐음을 확인했다.
 - [x] production branch가 `main`임을 확인했다.
 - [x] 최신 대상 commit Production이 `READY`임을 확인했다.
-- [x] 안정 URL `https://ic-project-xi.vercel.app`에서 제목과 큐레이션 3개를 확인했다.
+- [x] 안정 URL `https://ictour.vercel.app`에서 제목과 큐레이션 3개를 확인했다.
 - [x] Production 환경변수 8개를 Config/Secret으로 분리 등록하고 값은 문서에 남기지 않았다.
 - [x] 현재 배포 범위는 계획 문서의 개인·비상업 학습 MVP로 두며, 상업 운영으로 전환하면 Pro 조건을 다시 연다.
 
@@ -241,7 +247,7 @@ Kakao Maps의 도메인, 쿼터·비용과 약관 사실은 부록 A5~A8에, TMA
 - [x] Google 실제 Production 로그인·callback·세션 복귀·일정 저장을 검증했다.
 - [x] Kakao 실제 로그인·callback·세션 복귀·일정 저장을 검증했다.
 - [x] Google·Kakao 사용자가 각자 소유 일정 1개만 조회함을 UI와 Auth Admin/REST 집계로 검증했다.
-- [ ] 계정삭제 RPC가 auth user와 소유 일정·stop·draft를 삭제하는지 검증한다.
+- [x] Google 계정삭제 RPC가 auth user와 소유 가족 일정·stop을 삭제하고 Kakao 소유 일정은 유지하는지 검증했다. 삭제 후 집계는 사용자 1명·일정 1개·stop 4개·draft 0개였다.
 - [x] `service_role`이 코드·Vercel 공개 변수·브라우저 번들에 없고 관리 검증에만 일시 사용됐음을 확인했다.
 
 ### Kakao Maps
@@ -280,7 +286,7 @@ Kakao Maps의 도메인, 쿼터·비용과 약관 사실은 부록 A5~A8에, TMA
 | --- | --- | --- | --- |
 | 배포 | 현재 HEAD와 READY Production commit이 일치하고 Production 변수 8개 반영 재배포도 READY다. | 요청된 코드와 Cloud runtime 설정이 공개 URL에 배포됐음을 증명한다. | 상업 운영 시 Hobby 조건 충족 여부를 대신하지 않는다. |
 | Supabase Auth | Cloud Site URL·redirect allow list, provider Enabled, 두 OAuth 로그인·세션 복귀·provider별 일정 저장을 확인했다. | Production callback과 실제 인증·저장 성공을 증명한다. | provider 자체 장애 시 가용성을 보장하지는 않는다. |
-| Supabase RLS | migration 5개·lint clean·익명 REST 조회·익명 insert 401·Google/Kakao 일정 소유권 격리를 확인했다. | schema 적용, 공개 읽기, 익명 쓰기 차단과 두 인증 사용자의 소유 데이터 격리를 증명한다. | 계정삭제 연쇄는 최종 삭제 승인 전이다. |
+| Supabase RLS | migration 5개·lint clean·익명 REST 조회·익명 insert 401·Google/Kakao 일정 소유권 격리·Google 계정삭제 연쇄를 확인했다. | schema 적용, 공개 읽기, 익명 쓰기 차단, 두 인증 사용자의 소유 데이터 격리와 삭제 대상 소유 데이터만 제거됨을 증명한다. | 삭제 검증 뒤 Kakao 사용자·일정은 유지됐다. |
 | Kakao | provider Enabled, Production domain·redirect, 무료 쿼터·Biz Wallet 없음·비용 상한 0원, 지도 렌더링과 OAuth 저장을 확인했다. | Production 계정 설정과 현재 무료 운영 경계 및 실동작을 증명한다. | 유료 API를 활성화하면 비용 상한은 재검토해야 한다. |
 | TMAP | `docs/prd.md`, `docs/frd.md`, `docs/plan.md`, `docs/research/map-provider-feasibility.md`는 현재 제외와 재도입 게이트를 일관되게 기록한다. | 프로젝트 출시 범위 결정이다. | TMAP 또는 Kakao가 교차 표시를 법적·계약적으로 승인했다는 뜻이 아니다. |
 | 장소 데이터 | `verified-place-catalog.md`, 실재 fixture 9개, Cloud seed·REST 9개가 일치한다. | 가짜 장소·`example.com` 출처가 제거됐음을 증명한다. | 운영정보가 영구 불변이거나 코스 이동시간이 항상 유효함을 뜻하지 않는다. |
