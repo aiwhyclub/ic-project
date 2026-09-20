@@ -18,7 +18,7 @@
 
 | 영역 | 확인된 사실 | 프로젝트 판단 | 출시 전 상태 |
 | --- | --- | --- | --- |
-| Vercel | Team `Drone`의 Hobby 프로젝트 `ic-project`가 GitHub `aiwhyclub/ic-project`의 `main`과 연결됐다. Production 환경변수 반영 배포가 `READY`이며 안정 URL은 `https://ictour.vercel.app`이다. | STORY 13.1 완료. 단, Hobby는 개인·비상업 범위이므로 상업 운영이면 Pro 전환이 필요하다. | **완료** |
+| Vercel | Team `Drone`의 Hobby 프로젝트 `ic-project`가 GitHub `aiwhyclub/ic-project`의 `main`과 연결됐다. Production 환경변수 반영 배포가 `READY`이며 안정 URL은 `https://ictour.vercel.app`이다. 익명 공개 점검에서 SSO Deployment Protection을 해제하고 Git Fork Protection은 유지했다. | STORY 13.1 완료. 안정 URL은 Vercel 로그인 전환 없이 앱을 HTTP 200으로 반환한다. 단, Hobby는 개인·비상업 범위이므로 상업 운영이면 Pro 전환이 필요하다. | **완료** |
 | Supabase | `Vibe Coding Project`는 `FREE`·`Healthy`다. migration 5개가 적용됐고 Cloud DB lint는 clean이다. Site URL·redirect allow list·Google/Kakao provider를 설정했다. 삭제 전 provider별 사용자·일정 1개씩을 확인한 뒤 Google 사용자를 삭제했고, Google 소유 가족 일정도 함께 삭제됐다. | 두 OAuth 로그인·callback·사용자별 저장·격리와 계정삭제 연쇄를 확인했다. Free 자동 backup은 없지만 schema·data dump 실행 절차와 결과를 검증했다. | **완료** |
 | Kakao Maps | 계정의 유일한 Drone 앱에 Kakao Map 무료 쿼터 배지가 있다. Production JavaScript SDK domain·Login Redirect URI와 실제 지도 타일·축척·저작권 링크를 확인했다. | Production domain·redirect·지도 렌더링·현재 유료비용 상한 blocker는 해제됐다. | **완료** |
 | TMAP | 공개 문서에는 경로·외부 앱 연동 기능과 데이터 보관·유료 전환 경계가 있다. 세부 링크는 부록 A9~A11에 보존했다. | TMAP API 연동과 Kakao Map 내부 교차 표시는 1차 출시에서 제외한다. 재도입은 외부 앱·웹 전환부터 별도 검토하며, 내부 표시는 서면 허용 근거를 확보한 뒤에만 검토한다. | **현재 출시 범위 제외** |
@@ -151,6 +151,12 @@
 - `evidence_source`: Vercel CLI·Dashboard, Supabase Auth URL Configuration, Google Cloud OAuth client, Kakao Developers 플랫폼 키, 공개 브라우저
 - `captured_at`: 2026-09-20
 - `provenance_note`: 안정 URL을 `https://ictour.vercel.app`로 연결하고 Supabase Site URL·Production callback, Google 승인 JavaScript origin, Kakao JavaScript SDK domain·Login Redirect URI를 같은 도메인으로 교체했다. 기존 Production callback과 허용 origin은 제거했으며 비밀값은 기록하지 않았다.
+
+### L11. 익명 공개 접근 복구
+
+- `evidence_source`: Vercel CLI의 project protection·alias 조회, 익명 HTTP 응답
+- `captured_at`: 2026-09-20
+- `provenance_note`: 익명 요청이 Vercel 로그인으로 전환되는 원인을 SSO Deployment Protection의 `all_except_custom_domains` 설정으로 확인했다. 사용자 승인 뒤 `ic-project`의 SSO 보호만 해제하고 Git Fork Protection은 유지했다. 현재 `https://ictour.vercel.app`은 Vercel 로그인 전환 없이 앱 제목 `이천 세이브포인트`와 HTTP 200을 반환하며, 기존 `https://ic-project-xi.vercel.app`은 별칭 목록에 없고 HTTP 404다. 소스 코드와 데이터는 변경하지 않았다.
 
 ## 4. Google·Kakao·TMAP 출시 범위 판단
 
