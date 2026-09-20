@@ -2145,7 +2145,9 @@ a:focus-visible {
 
   .plan-map-panel {
     order: -1;
-    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding: 0 0 calc(42vh + var(--space-4));
     border: 0;
     background: transparent;
   }

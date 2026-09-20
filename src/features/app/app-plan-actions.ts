@@ -147,14 +147,6 @@ export function usePlanActions(input: PlanActionInput) {
     })), 420);
   }, [setWorkingPlans]);
 
-  const markSegmentFailure = useCallback((planId: string, segmentId: string) => {
-    setWorkingPlans((current) => current.map((plan) => plan.id === planId
-      ? { ...plan, segments: plan.segments.map((segment) => segment.id === segmentId
-        ? setSegmentStatus("error", "경로 공급자 응답이 지연되어 이 구간만 계산하지 못했습니다.")(segment)
-        : segment) }
-      : plan));
-  }, [setWorkingPlans]);
-
   const retrySegment = useCallback((planId: string, segmentId: string) => recomputePlan(planId, segmentId), [recomputePlan]);
 
   const savePlans = useCallback((): SaveResult => {
@@ -202,7 +194,6 @@ export function usePlanActions(input: PlanActionInput) {
     moveStop,
     setTransportMode,
     recomputePlan,
-    markSegmentFailure,
     retrySegment,
     savePlans,
   };

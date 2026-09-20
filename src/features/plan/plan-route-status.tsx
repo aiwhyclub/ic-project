@@ -6,7 +6,6 @@ type PlanRouteStatusProps = Readonly<{
   readonly segments: readonly RouteSegment[];
   readonly places: readonly Place[];
   readonly onRetry: (segmentId: string) => void;
-  readonly onFail: (segmentId: string) => void;
 }>;
 
 function minutesLabel(minutes: number): string {
@@ -19,7 +18,7 @@ function segmentLabel(segment: RouteSegment, places: readonly Place[]): string {
   return `${from} → ${to}`;
 }
 
-export function PlanRouteStatus({ segments, places, onRetry, onFail }: PlanRouteStatusProps) {
+export function PlanRouteStatus({ segments, places, onRetry }: PlanRouteStatusProps) {
   const totalDistance = segments.reduce((sum, segment) => sum + segment.distanceMeters, 0);
   const totalDuration = segments.reduce((sum, segment) => sum + segment.durationMinutes, 0);
   return (
@@ -49,7 +48,6 @@ export function PlanRouteStatus({ segments, places, onRetry, onFail }: PlanRoute
               <div className="plan-route-status__actions">
                 {segment.status === "error" && <button type="button" onClick={() => onRetry(segment.id)}>다시 계산</button>}
                 {segment.status === "error" && <a href={`https://map.kakao.com/?q=${encodeURIComponent(segmentLabel(segment, places))}`} target="_blank" rel="noreferrer">Kakao 지도 열기</a>}
-                {segment.status !== "error" && <button type="button" onClick={() => onFail(segment.id)}>오류 시뮬레이션</button>}
               </div>
             </li>
           ))}

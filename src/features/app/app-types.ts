@@ -103,7 +103,6 @@ export type AppState = {
   readonly moveStop: (planId: string, fromIndex: number, toIndex: number) => void;
   readonly setTransportMode: (planId: string, transportMode: TransportMode) => void;
   readonly recomputePlan: (planId: string, segmentId?: string) => void;
-  readonly markSegmentFailure: (planId: string, segmentId: string) => void;
   readonly retrySegment: (planId: string, segmentId: string) => void;
   readonly savePlans: () => SaveResult;
   readonly startOAuth: (provider: Exclude<AuthProvider, "demo">, returnTo: string) => Promise<AuthStartResult>;

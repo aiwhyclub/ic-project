@@ -39,7 +39,6 @@ export function PlanWorkspace() {
     workingPlans,
     addStop,
     clearWorkingPlans,
-    markSegmentFailure,
     moveStop,
     openItineraryInEditor,
     recomputePlan,
@@ -193,7 +192,7 @@ export function PlanWorkspace() {
           </section>
           <aside className="plan-map-panel" aria-label="Kakao 지도와 경로 요약">
             <KakaoMapCanvas places={activePlanPlaces} fallback={<div className="plan-map-canvas"><p className="eyebrow">Kakao Map 미리보기</p><h2>방문 마커 {activePlan.stops.length}개</h2><ol>{activePlan.stops.map((stop, index) => <li key={stop.placeId}><span>{index + 1}</span>{placeName(stop.placeId, places)}</li>)}</ol><p>실제 지도 연결 전에도 장소·순서·구간 상태를 편집할 수 있습니다.</p></div>} />
-            <PlanRouteStatus segments={activePlan.segments} places={places} onRetry={(segmentId) => retrySegment(activePlan.id, segmentId)} onFail={(segmentId) => markSegmentFailure(activePlan.id, segmentId)} />
+            <PlanRouteStatus segments={activePlan.segments} places={places} onRetry={(segmentId) => retrySegment(activePlan.id, segmentId)} />
           </aside>
         </div>
         {showAuth && <OAuthModal onClose={closeAuth}><AuthPanel reason="선택한 일정들을 계정에 저장하고 다음 방문에도 다시 열기 위해서입니다." returnTo="/plan" onCancel={closeAuth} onComplete={() => setShowAuth(false)} /></OAuthModal>}
